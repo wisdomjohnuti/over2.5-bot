@@ -40,7 +40,8 @@ def scrape_forebet():
 
 
 def get_over25_games():
-    games = []
-    games.extend(scrape_predictz())
-    games.extend(scrape_forebet())
+    games = {
+        "predictz": scrape_predictz(),
+        "forebet": scrape_forebet()
+    }
     return games

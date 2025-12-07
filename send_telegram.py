@@ -31,24 +31,48 @@ def send_message(text):
 def format_message(top5, top10):
     """
     Formats the message nicely for Telegram.
+    Includes confidence and number of sources.
     """
     text = "<b>🔥 TOP OVER 2.5 PICKS 🔥</b>\n\n"
 
     text += "<b>TOP 5 OVER 2.5:</b>\n"
     for item in top5:
-        text += f"• {item['match']} — {item['prediction']}\n"
+        sources_count = len(item.get("sources", []))
+        text += (
+            f"• <b>{item['match']}</b>\n"
+            f"  ↳ {item['prediction']} | "
+            f"<i>{item['confidence']}% confidence</i> | "
+            f"{sources_count} sources\n"
+        )
 
     text += "\n<b>TOP 10 OVER 2.5:</b>\n"
     for item in top10:
-        text += f"• {item['match']} — {item['prediction']}\n"
+        sources_count = len(item.get("sources", []))
+        text += (
+            f"• <b>{item['match']}</b>\n"
+            f"  ↳ {item['prediction']} | "
+            f"<i>{item['confidence']}% confidence</i> | "
+            f"{sources_count} sources\n"
+        )
 
     return text
 
 
 if __name__ == "__main__":
     # Local test example
-    sample5 = [{"match": "Team A vs Team B", "prediction": "Over 2.5"}]
-    sample10 = [{"match": "Team C vs Team D", "prediction": "Over 2.5"}]
+    sample5 = [{
+        "match": "Team A vs Team B",
+        "prediction": "Over 2.5",
+        "confidence": 85,
+        "sources": ["predictz", "forebet"]
+    }]
+
+    sample10 = [{
+        "match": "Team C vs Team D",
+        "prediction": "Over 2.5",
+        "confidence": 72,
+        "sources": ["forebet"]
+    }]
 
     msg = format_message(sample5, sample10)
     print(msg)

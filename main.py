@@ -1,11 +1,11 @@
-from scraper import scrape_all
+from scraper import get_over25_games
 from analyze import filter_top_games
 from send_telegram import send_message, format_message
 
 
 def run():
     print("🔎 Scraping websites...")
-    data = scrape_all()
+    data = get_over25_games()
 
     print("📊 Analyzing data...")
     top5, top10 = filter_top_games(data)

@@ -1,6 +1,5 @@
 from scripts.scraper import get_over25_games
 from analyze import filter_top_games
-from send_telegram import send_message, format_message
 
 
 def run():
@@ -10,11 +9,13 @@ def run():
     print("📊 Analyzing data...")
     top5, top10 = filter_top_games(data)
 
-    print("✈ Sending to Telegram...")
-    text = format_message(top5, top10)
-    send_message(text)
+    print("\n🔥 TOP 5 OVER 2.5 GAMES")
+    for game in top5:
+        print(game)
 
-    print("✅ Done!")
+    print("\n🔥 TOP 10 OVER 2.5 GAMES")
+    for game in top10:
+        print(game)
 
 
 if __name__ == "__main__":

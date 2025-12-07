@@ -1,7 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
 
-
 def scrape_predictz():
     url = "https://www.predictz.com/predictions/"
     response = requests.get(url)
@@ -14,9 +13,7 @@ def scrape_predictz():
             teams = match.select_one(".ptnmt").get_text(strip=True)
             prediction = match.select_one(".ptnpr").get_text(strip=True)
 
-            # Only add Over 2.5 predictions
-            if "Over 2.5" in prediction:
-                games.append((teams, prediction))  # <-- FIXED
+            games.append((teams, prediction))
         except:
             continue
 
@@ -34,13 +31,11 @@ def scrape_forebet():
         try:
             home = match.select_one(".homeTeam").get_text(strip=True)
             away = match.select_one(".awayTeam").get_text(strip=True)
-            prediction = match.select_one(".predict").get_text(strip=True)
-
             teams = f"{home} vs {away}"
 
-            # Only add Over 2.5 predictions
-            if "Over 2.5" in prediction:
-                games.append((teams, prediction))  # <-- FIXED
+            prediction = match.select_one(".predict").get_text(strip=True)
+
+            games.append((teams, prediction))
         except:
             continue
 
@@ -50,5 +45,5 @@ def scrape_forebet():
 def get_over25_games():
     return {
         "predictz": scrape_predictz(),
-        "forebet": scrape_forebet(),
+        "forebet": scrape_forebet()
     }

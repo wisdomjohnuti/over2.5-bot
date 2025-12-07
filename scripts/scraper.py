@@ -1,19 +1,22 @@
 import requests
 from bs4 import BeautifulSoup
 
+
 def scrape_predictz():
     url = "https://www.predictz.com/predictions/"
     response = requests.get(url)
     soup = BeautifulSoup(response.text, "lxml")
 
     games = []
+
     for match in soup.select(".ptn"):
         try:
             teams = match.select_one(".ptnmt").get_text(strip=True)
             prediction = match.select_one(".ptnpr").get_text(strip=True)
 
+            # Only add Over 2.5 predictions
             if "Over 2.5" in prediction:
-                games.append(teams)
+                games.append((teams, prediction))  # <-- FIXED
         except:
             continue
 
@@ -26,13 +29,18 @@ def scrape_forebet():
     soup = BeautifulSoup(response.text, "lxml")
 
     games = []
+
     for match in soup.select(".rcnt"):
         try:
-            teams = match.select_one(".homeTeam").get_text(strip=True) + " vs " + match.select_one(".awayTeam").get_text(strip=True)
+            home = match.select_one(".homeTeam").get_text(strip=True)
+            away = match.select_one(".awayTeam").get_text(strip=True)
             prediction = match.select_one(".predict").get_text(strip=True)
 
+            teams = f"{home} vs {away}"
+
+            # Only add Over 2.5 predictions
             if "Over 2.5" in prediction:
-                games.append(teams)
+                games.append((teams, prediction))  # <-- FIXED
         except:
             continue
 
@@ -40,8 +48,7 @@ def scrape_forebet():
 
 
 def get_over25_games():
-    games = {
+    return {
         "predictz": scrape_predictz(),
-        "forebet": scrape_forebet()
+        "forebet": scrape_forebet(),
     }
-    return games

@@ -1,4 +1,4 @@
-from scraper import get_over25_games
+from scripts.scraper import get_over25_games
 from analyze import filter_top_games
 from send_telegram import send_message, format_message
 
